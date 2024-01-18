@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    
+
+<div class="d-flex container-fluid m-0 p-0 position-fixed" style="width: 100%; overflow: hidden; height: 100vh;">
+    
+
+<!-- sid bar section -->
+
+    <div class="m-0 d-lg-inline  collapse collapse-horizontal flex-column flex-shrink-0 p-3 pt-5   z-3 " style="width: 20%; height: 100vh; background-color: #141517; border-right: 1px solid white;">
+      <a class="navbar-brand" href="#"><img style="width: 50px;" src="image/_b1568772-17fc-48ba-a2dd-bdd0ac2aa12a-removebg-preview.png" alt="">
+      <span class="text-white" style="font-size: 1.2rem;">Lofi</span>
+      </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li class="nav-item">
+            <a href="#" class="nav-link text-white  btn btn-outline-primary" aria-current="page">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+              Discover
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white btn btn-outline-primary">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+              New Release
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white  btn btn-outline-primary">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+              Popular
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white  btn btn-outline-primary">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+              Charts
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white  btn btn-outline-primary">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+              Customers
+            </a>
+          </li>
+        </ul>
+        <hr>
+        
+      </div>
+
+
+
+
+
+<div id="con" style="background-color: #161719; ">
+    
+<!-- top navigation section -->
+
+
+    
+<nav class="navbar navbar-expand-lg z-1 p-0 m-0" id="nav2" >
+    <div style="background-color: #141517;" class="container-fluid p-1">
+      
+      <button class="navbar-toggler  btn btn-outline-primary " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active text-white" aria-current="page" href="#">Songs</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Web Player</a></li>
+              <li><a class="dropdown-item" href="#">Setting</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled text-white" aria-disabled="true">Artist</a>
+          </li>
+        </ul>
+        <form class="d-flex"  id="searchForm" role="search">
+          <input class="form-control me-2" type="search" id="songName" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+
+
+  <!-- music section -->
+  <div id="topTracksList" class="row row-cols-1 row-cols-md-2 g-3 m-0 mb-5  pt-5 row-cols-lg-3" id="contanin"  style="padding-left: 50px; overflow-y: auto; height: 100vh;">
+    <!-- <div  class="col">
+     <div class="card" style="width: 17rem;">
+       <img src="image/city-digital-light-design-wallpaper-preview.jpg" class="card-img-top" alt="...">
+       <div class="card-body">
+        <h4 class="card-title">Some quick</h4>
+       </div>
+     </div> -->
+    </div>
+    
+
+  
+
+
+
+  </div>
+</div>
+
+
+
+</div>
+
+
+
+<script>
+  // Replace 'YOUR_API_KEY' with your actual Last.fm API key
+  const apiKey = '2b010271b93852740ebf92dd581adcbb';
+  const apiUrl = 'https://ws.audioscrobbler.com/2.0/';
+
+  async function getLastFmData(method, params) {
+      const response = await fetch(`${apiUrl}?method=${method}&api_key=${apiKey}&format=json&${params}`);
+      const data = await response.json();
+      return data;
+  }
+
+  async function getArtistInfo(artistName) {
+      const method = 'artist.getinfo';
+      const params = `artist=${encodeURIComponent(artistName)}`;
+      return await getLastFmData(method, params);
+  }
+
+  function displayTopTracks(tracks) {
+      const topTracksList = document.getElementById('topTracksList');
+      const coll = document.createElement('div');
+      coll.classList.add('col')
+      const cards = document.createElement('div');
+      cards.classList.add('card')
+      cards.style.width = '17rem';
+      const cardbod = document.createElement('div');
+      cardbod.classList.add('card-body')
+
+
+      tracks.forEach(async track => {
+          const listItem = document.createElement('h4');
+          listItem.classList.add('card-title')
+          listItem.style.color = "white"
+          const trackName = track.name || 'Unknown Track';
+          const artistName = track.artist ? track.artist.name || 'Unknown Artist' : 'Unknown Artist';
+          listItem.textContent = `${trackName} by ${artistName}`;
+
+          // Fetch additional info about the artist
+          const artistInfo = await getArtistInfo(artistName);
+
+          if (artistInfo && artistInfo.artist && artistInfo.artist.url) {
+              // Create an anchor tag
+              const artistLink = document.createElement('a');
+              artistLink.href = artistInfo.artist.url;
+              artistLink.target = '_blank'; // Open link in a new tab/window
+
+              // Create an image element
+              const image = document.createElement('img');
+              image.classList.add('card-img-top')
+              
+              
+              if (artistInfo.artist.image && artistInfo.artist.image.length > 0) {
+                  // Use the first available image (you can adjust this logic based on your needs)
+                  const imageSrc = artistInfo.artist.image[0]['#text'];
+                  image.src = imageSrc;
+                  image.alt = `${artistName}`;
+
+                  // Append the image to the anchor tag
+                  artistLink.appendChild(image);
+
+                  // Append the anchor tag to the list item
+                  listItem.appendChild(artistLink);
+              }
+          }
+
+          // Append the list item to the list
+          topTracksList.appendChild(listItem);
+         
+
+        
+      });
+  }
+
+  async function getTopTracks() {
+      try {
+          const method = 'chart.gettoptracks';
+          const params = 'limit=10';
+
+          const data = await getLastFmData(method, params);
+
+          // Log the entire Last.fm API response to inspect in the browser console
+          console.log('Last.fm API Response:', data);
+
+          if (data && data.tracks && data.tracks.track) {
+              const topTracks = data.tracks.track;
+              displayTopTracks(topTracks);
+          } else {
+              console.error('Invalid or missing data structure in the Last.fm API response.');
+          }
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+  }
+
+  async function searchSong(songName) {
+    try {
+        const method = 'track.search';
+        const params = `track=${encodeURIComponent(songName)}&limit=5`;
+
+        const data = await getLastFmData(method, params);
+
+        const searchResultsList = document.getElementById('topTracksList');
+        searchResultsList.innerHTML = '';
+
+        if (data && data.results && data.results.trackmatches && data.results.trackmatches.track) {
+            const searchResults = data.results.trackmatches.track;
+            for (const result of searchResults) {
+                const listItem = document.createElement('h4');
+                listItem.classList.add('card-title');
+                listItem.style.color = "white";
+                const resultTrackName = result.name || 'Unknown Track';
+                const resultArtistName = result.artist || 'Unknown Artist';
+                listItem.textContent = `${resultTrackName} by ${resultArtistName}`;
+
+                searchResultsList.appendChild(listItem);
+
+                const artistInfo = await getArtistInfo(result.artist);
+
+                if (artistInfo && artistInfo.artist && artistInfo.artist.url) {
+                    const artistLink = document.createElement('a');
+                    artistLink.href = artistInfo.artist.url;
+                    artistLink.target = '_blank';
+
+                    const image = document.createElement('img');
+                    image.classList.add('card-img-top');
+
+                    if (artistInfo.artist.image && artistInfo.artist.image.length > 0) {
+                        const imageSrc = artistInfo.artist.image[0]['#text'];
+                        image.src = imageSrc;
+                        image.alt = `${resultArtistName}`;
+                        artistLink.appendChild(image);
+                        listItem.appendChild(artistLink);
+                    }
+                }
+            }
+        } else {
+            console.error('Invalid or missing data structure in the Last.fm API response.');
+        }
+    } catch (error) {
+        console.error('Error fetching search results:', error);
+    }
+}
+
+
+        const searchForm = document.getElementById('searchForm');
+        searchForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const songNameInput = document.getElementById('songName');
+            const songName = songNameInput.value.trim();
+
+            if (songName !== '') {
+                searchSong(songName);
+            }
+        });
+
+  getTopTracks();
+</script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    
+</body>
+</html>
